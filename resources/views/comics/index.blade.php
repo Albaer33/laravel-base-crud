@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layout.app')
 
 @section('main_content')
-    <h1>Lista dei tipi di pasta</h1>
+    <h1>Lista dei comics</h1>
 
     @foreach ($comics as $comic)
         <div>
