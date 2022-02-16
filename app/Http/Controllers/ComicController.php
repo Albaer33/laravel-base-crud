@@ -30,7 +30,7 @@ class ComicController extends Controller
      */
     public function create()
     {
-        return view('comics.create');
+        return view('comics.insert');
     }
 
     /**
@@ -68,10 +68,10 @@ class ComicController extends Controller
         $comics = Comic::findOrFail($id);
 
         $data = [
-            'comic' => $comics
+            'comics' => $comics
         ];
 
-        return view('comic.show', $data);
+        return view('comics.show', $data);
     }
 
     /**
