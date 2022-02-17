@@ -15,12 +15,8 @@ class ComicController extends Controller
     public function index()
     {
         $comics = Comic::all();
-
-        $data = [
-            'comics' => $comics
-        ];
         
-        return view('comics.index', $data);
+        return view('comics.index', compact('comics'));
     }
 
     /**
@@ -42,6 +38,8 @@ class ComicController extends Controller
     public function store(Request $request)
     {
         $form_data = $request->all();
+
+        $request->validate($this->getValidationRules());
         
         $new_comic = new Comic();
         $new_comic->title = $form_data['title'];
@@ -67,11 +65,7 @@ class ComicController extends Controller
     {
         $comics = Comic::findOrFail($id);
 
-        $data = [
-            'comics' => $comics
-        ];
-
-        return view('comics.show', $data);
+        return view('comics.show', compact('comics'));
     }
 
     /**
@@ -82,7 +76,9 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comics = Comic::findOrFail($id);
+
+        return view('comics.edit', compact('comics'));
     }
 
     /**
@@ -94,7 +90,14 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $form_data = $request->all();
+
+        $request->validate($this->getValidationRules());
+        
+        $update_comic = Pasta::findOrFail($id);
+        $update_comic->update($form_data);
+
+        return redirect()->route('comics.show', ['comic' => $update_comic->id]);
     }
 
     /**
@@ -105,6 +108,22 @@ class ComicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $delete_comic = Pasta::findOrFail($id);
+        $delete_comic->delete();
+
+        return redirect()->route('comics.index');
+    }
+
+    // custom function
+    protected function getValidationRules() {
+        return [
+            'title' => 'required|max:100',
+            'description' => 'required|min:10|max:60000',
+            'thumb' => 'required|max:250',
+            'price' => 'required|numeric',
+            'series' => 'required|max:50',
+            'sale_date' => 'required|date',
+            'type' => 'required|max:30',
+        ];
     }
 }
