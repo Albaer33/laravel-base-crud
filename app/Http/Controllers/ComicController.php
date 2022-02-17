@@ -94,7 +94,7 @@ class ComicController extends Controller
 
         $request->validate($this->getValidationRules());
         
-        $update_comic = Pasta::findOrFail($id);
+        $update_comic = Comic::findOrFail($id);
         $update_comic->update($form_data);
 
         return redirect()->route('comics.show', ['comic' => $update_comic->id]);
@@ -108,7 +108,7 @@ class ComicController extends Controller
      */
     public function destroy($id)
     {
-        $delete_comic = Pasta::findOrFail($id);
+        $delete_comic = Comic::findOrFail($id);
         $delete_comic->delete();
 
         return redirect()->route('comics.index');
